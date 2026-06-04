@@ -604,6 +604,36 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</a>
+				<a href={`https://grafana.${baseDomain}/`} class="card" target="_blank" data-container="main-grafana">
+					<div class="card-header">
+						<h2 class="card-title">Grafana</h2>
+						<div class="status-dot" data-dot-for="main-grafana"></div>
+					</div>
+					<p class="card-desc">Metrics visualization and dashboards</p>
+					<div class="card-stats">
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
+					</div>
+				</a>
+				<a href={`https://prometheus.${baseDomain}`} class="card" target="_blank" data-container="main-prometheus">
+					<div class="card-header">
+						<h2 class="card-title">Prometheus</h2>
+						<div class="status-dot" data-dot-for="main-prometheus"></div>
+					</div>
+					<p class="card-desc">Systems monitoring and alerting toolkit</p>
+					<div class="card-stats">
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
+					</div>
+				</a>
 			</div>
 
 			<div class="section-title">Infrastructure</div>
@@ -659,6 +689,66 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						<div class="status-dot" data-dot-for="main-watchtower"></div>
 					</div>
 					<p class="card-desc">Automatic image updater</p>
+					<div class="card-stats">
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
+					</div>
+				</div>
+				<div class="card" data-container="main-blackbox">
+					<div class="card-header">
+						<h2 class="card-title">Blackbox Exporter</h2>
+						<div class="status-dot" data-dot-for="main-blackbox"></div>
+					</div>
+					<p class="card-desc">Blackbox monitoring and probing exporter</p>
+					<div class="card-stats">
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
+					</div>
+				</div>
+				<div class="card" data-container="main-loki">
+					<div class="card-header">
+						<h2 class="card-title">Grafana Loki</h2>
+						<div class="status-dot" data-dot-for="main-loki"></div>
+					</div>
+					<p class="card-desc">Horizontally-scalable log aggregation system</p>
+					<div class="card-stats">
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
+					</div>
+				</div>
+				<div class="card" data-container="main-promtail">
+					<div class="card-header">
+						<h2 class="card-title">Grafana Promtail</h2>
+						<div class="status-dot" data-dot-for="main-promtail"></div>
+					</div>
+					<p class="card-desc">Log shipping agent for Loki</p>
+					<div class="card-stats">
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
+					</div>
+				</div>
+				<div class="card" data-container="main-postgres">
+					<div class="card-header">
+						<h2 class="card-title">PostgreSQL Database</h2>
+						<div class="status-dot" data-dot-for="main-postgres"></div>
+					</div>
+					<p class="card-desc">Object-relational database system</p>
 					<div class="card-stats">
 						<div class="stats-row">
 							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
