@@ -386,23 +386,23 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						<div class="status-dots">
 							<div class="dot-wrapper">
 								<span class="dot-label">FE</span>
-								<div class="status-dot" data-dot-for="fe-homeserver"></div>
+								<div class="status-dot" data-dot-for="homeserver-fe"></div>
 							</div>
 							<div class="dot-wrapper">
 								<span class="dot-label">BE</span>
-								<div class="status-dot" data-dot-for="be-homeserver"></div>
+								<div class="status-dot" data-dot-for="homeserver-be"></div>
 							</div>
 						</div>
 					</div>
 					<p class="card-desc">System dashboard and analytics gateway</p>
 					<div class="card-stats">
-						<div class="stats-row" data-container="fe-homeserver">
+						<div class="stats-row" data-container="homeserver-fe">
 							<div class="card-stats-col"><span class="card-stats-label">FE CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
 							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
 						</div>
-						<div class="stats-row" data-container="be-homeserver">
+						<div class="stats-row" data-container="homeserver-be">
 							<div class="card-stats-col"><span class="card-stats-label">BE CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
@@ -476,13 +476,13 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						<div class="status-dots">
 							<div class="dot-wrapper">
 								<span class="dot-label">APP</span>
-								<div class="status-dot" data-dot-for="kei-japanese"></div>
+								<div class="status-dot" data-dot-for="kei-japanese-app"></div>
 							</div>
 						</div>
 					</div>
 					<p class="card-desc">Premium handcrafted Japanese-style cheese toast</p>
 					<div class="card-stats">
-						<div class="stats-row" data-container="kei-japanese">
+						<div class="stats-row" data-container="kei-japanese-app">
 							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
@@ -496,13 +496,13 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						<div class="status-dots">
 							<div class="dot-wrapper">
 								<span class="dot-label">APP</span>
-								<div class="status-dot" data-dot-for="electricity-tracker"></div>
+								<div class="status-dot" data-dot-for="electricity-tracker-app"></div>
 							</div>
 						</div>
 					</div>
 					<p class="card-desc">Monitor and track electricity usage</p>
 					<div class="card-stats">
-						<div class="stats-row" data-container="electricity-tracker">
+						<div class="stats-row" data-container="electricity-tracker-app">
 							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
 							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
@@ -514,40 +514,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 
 			<div class="section-title">Internal Tools</div>
 			<div class="grid">
-				<a href={`https://analytics.${baseDomain}`} class="card" target="_blank" data-container="main-dashboard">
-					<div class="card-header">
-						<h2 class="card-title">GoAccess</h2>
-						<div class="status-dot" data-dot-for="main-dashboard"></div>
-					</div>
-					<p class="card-desc">NGINX Server Analytics</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
-						</div>
-					</div>
-				</a>
-				<a href={`https://mongo.${baseDomain}`} class="card" target="_blank" data-container="mongo-express">
-					<div class="card-header">
-						<h2 class="card-title">MongoDB Express</h2>
-						<div class="status-dot" data-dot-for="mongo-express"></div>
-					</div>
-					<p class="card-desc">MongoDB Web GUI</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
-						</div>
-					</div>
-				</a>
-				<a href={`https://openinary.${baseDomain}`} class="card" target="_blank" data-container="openinary">
+				<a href={`https://openinary.${baseDomain}`} class="card" target="_blank" data-container="media-openinary">
 					<div class="card-header">
 						<h2 class="card-title">Openinary</h2>
-						<div class="status-dot" data-dot-for="openinary"></div>
+						<div class="status-dot" data-dot-for="media-openinary"></div>
 					</div>
 					<p class="card-desc">Image Manager</p>
 					<div class="card-stats">
@@ -559,25 +529,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</a>
-				<a href={`https://db.${baseDomain}`} class="card" target="_blank" data-container="phpmyadmin">
-					<div class="card-header">
-						<h2 class="card-title">phpMyAdmin</h2>
-						<div class="status-dot" data-dot-for="phpmyadmin"></div>
-					</div>
-					<p class="card-desc">MySQL Database Admin</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
-						</div>
-					</div>
-				</a>
-				<a href={`https://portainer.${baseDomain}`} class="card" target="_blank" data-container="portainer">
+				<a href={`https://portainer.${baseDomain}`} class="card" target="_blank" data-container="infra-portainer">
 					<div class="card-header">
 						<h2 class="card-title">Portainer</h2>
-						<div class="status-dot" data-dot-for="portainer"></div>
+						<div class="status-dot" data-dot-for="infra-portainer"></div>
 					</div>
 					<p class="card-desc">Docker Container Management</p>
 					<div class="card-stats">
@@ -589,25 +544,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</a>
-				<a href={`https://status.${baseDomain}`} class="card" target="_blank" data-container="uptime-kuma">
-					<div class="card-header">
-						<h2 class="card-title">Uptime Kuma</h2>
-						<div class="status-dot" data-dot-for="uptime-kuma"></div>
-					</div>
-					<p class="card-desc">Service monitoring and health</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
-						</div>
-					</div>
-				</a>
-				<a href={`https://grafana.${baseDomain}/`} class="card" target="_blank" data-container="main-grafana">
+				<a href={`https://grafana.${baseDomain}/`} class="card" target="_blank" data-container="monitoring-grafana">
 					<div class="card-header">
 						<h2 class="card-title">Grafana</h2>
-						<div class="status-dot" data-dot-for="main-grafana"></div>
+						<div class="status-dot" data-dot-for="monitoring-grafana"></div>
 					</div>
 					<p class="card-desc">Metrics visualization and dashboards</p>
 					<div class="card-stats">
@@ -619,10 +559,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</a>
-				<a href={`https://prometheus.${baseDomain}`} class="card" target="_blank" data-container="main-prometheus">
+				<a href={`https://prometheus.${baseDomain}`} class="card" target="_blank" data-container="monitoring-prometheus">
 					<div class="card-header">
 						<h2 class="card-title">Prometheus</h2>
-						<div class="status-dot" data-dot-for="main-prometheus"></div>
+						<div class="status-dot" data-dot-for="monitoring-prometheus"></div>
 					</div>
 					<p class="card-desc">Systems monitoring and alerting toolkit</p>
 					<div class="card-stats">
@@ -638,10 +578,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 
 			<div class="section-title">Infrastructure</div>
 			<div class="grid">
-				<div class="card" data-container="main-nginx">
+				<div class="card" data-container="infra-nginx">
 					<div class="card-header">
 						<h2 class="card-title">Nginx Gateway</h2>
-						<div class="status-dot" data-dot-for="main-nginx"></div>
+						<div class="status-dot" data-dot-for="infra-nginx"></div>
 					</div>
 					<p class="card-desc">Reverse proxy and gateway router</p>
 					<div class="card-stats">
@@ -653,10 +593,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</div>
-				<div class="card" data-container="main-db">
+				<div class="card" data-container="db-mysql">
 					<div class="card-header">
 						<h2 class="card-title">MySQL Database</h2>
-						<div class="status-dot" data-dot-for="main-db"></div>
+						<div class="status-dot" data-dot-for="db-mysql"></div>
 					</div>
 					<p class="card-desc">Relational database for host apps</p>
 					<div class="card-stats">
@@ -668,10 +608,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</div>
-				<div class="card" data-container="main-mongo">
+				<div class="card" data-container="db-mongo">
 					<div class="card-header">
 						<h2 class="card-title">MongoDB</h2>
-						<div class="status-dot" data-dot-for="main-mongo"></div>
+						<div class="status-dot" data-dot-for="db-mongo"></div>
 					</div>
 					<p class="card-desc">Document database for host apps</p>
 					<div class="card-stats">
@@ -683,10 +623,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</div>
-				<div class="card" data-container="main-watchtower">
+				<div class="card" data-container="infra-watchtower">
 					<div class="card-header">
 						<h2 class="card-title">Watchtower</h2>
-						<div class="status-dot" data-dot-for="main-watchtower"></div>
+						<div class="status-dot" data-dot-for="infra-watchtower"></div>
 					</div>
 					<p class="card-desc">Automatic image updater</p>
 					<div class="card-stats">
@@ -698,25 +638,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</div>
-				<div class="card" data-container="main-blackbox">
-					<div class="card-header">
-						<h2 class="card-title">Blackbox Exporter</h2>
-						<div class="status-dot" data-dot-for="main-blackbox"></div>
-					</div>
-					<p class="card-desc">Blackbox monitoring and probing exporter</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
-						</div>
-					</div>
-				</div>
-				<div class="card" data-container="main-loki">
+				<div class="card" data-container="monitoring-loki">
 					<div class="card-header">
 						<h2 class="card-title">Grafana Loki</h2>
-						<div class="status-dot" data-dot-for="main-loki"></div>
+						<div class="status-dot" data-dot-for="monitoring-loki"></div>
 					</div>
 					<p class="card-desc">Horizontally-scalable log aggregation system</p>
 					<div class="card-stats">
@@ -728,10 +653,10 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</div>
-				<div class="card" data-container="main-promtail">
+				<div class="card" data-container="monitoring-promtail">
 					<div class="card-header">
 						<h2 class="card-title">Grafana Promtail</h2>
-						<div class="status-dot" data-dot-for="main-promtail"></div>
+						<div class="status-dot" data-dot-for="monitoring-promtail"></div>
 					</div>
 					<p class="card-desc">Log shipping agent for Loki</p>
 					<div class="card-stats">
@@ -743,12 +668,42 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</div>
-				<div class="card" data-container="main-postgres">
+				<div class="card" data-container="db-postgres">
 					<div class="card-header">
 						<h2 class="card-title">PostgreSQL Database</h2>
-						<div class="status-dot" data-dot-for="main-postgres"></div>
+						<div class="status-dot" data-dot-for="db-postgres"></div>
 					</div>
 					<p class="card-desc">Object-relational database system</p>
+					<div class="card-stats">
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
+					</div>
+				</div>
+				<div class="card" data-container="monitoring-cadvisor">
+					<div class="card-header">
+						<h2 class="card-title">cAdvisor</h2>
+						<div class="status-dot" data-dot-for="monitoring-cadvisor"></div>
+					</div>
+					<p class="card-desc">Container resource usage exporter</p>
+					<div class="card-stats">
+						<div class="stats-row">
+							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val">--%</span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
+							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val">--</span></div>
+							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val">--</span></div>
+						</div>
+					</div>
+				</div>
+				<div class="card" data-container="monitoring-node-exporter">
+					<div class="card-header">
+						<h2 class="card-title">Node Exporter</h2>
+						<div class="status-dot" data-dot-for="monitoring-node-exporter"></div>
+					</div>
+					<p class="card-desc">Host system metrics exporter</p>
 					<div class="card-stats">
 						<div class="stats-row">
 							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val">--%</span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
