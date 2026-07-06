@@ -6,6 +6,17 @@
 
 A lightweight Astro static site that serves as the homeserver dashboard. It provides a visual interface for monitoring system vitals (CPU, RAM, disk, temperature) and Docker container statuses by consuming the backend API (`be-homeserver`).
 
+## Features
+
+- **Public Apps grid** — cards for each publicly deployed app (Homeserver Dashboard, The Wine Corner, Your Places, Kei Japanese Toast, Electricity Tracker) linking to their live URLs, with an online/offline status dot per container (FE/BE where applicable).
+- **Internal Tools grid** — quick links to Openinary, Portainer, Grafana, and Prometheus, each with a live status dot.
+- **Infrastructure grid** — status-only cards (no external link) for Nginx, MySQL, MongoDB, PostgreSQL, Watchtower, Loki, Promtail, cAdvisor, and Node Exporter.
+- **Live system vitals bar** — CPU load, RAM used/total, disk usage, and temperature, polled from `be-homeserver` every 5 seconds. A toggle switches between a compact single-line view and an expanded view with sparkline history for CPU, RAM, and temperature.
+- **Per-container stats** — a toggle reveals CPU%, memory%, memory usage, and uptime for every container, each with a rolling CPU/memory sparkline (last 12 samples).
+- **Status dots** — any card with a `data-dot-for` attribute turns green when the matching container's Docker status starts with `Up`, red otherwise.
+
+All data fetching happens client-side in the browser (see `src/pages/index.astro`) — the page itself is a single static HTML file with no server-side rendering or API routes.
+
 ## Tech Stack
 
 | Layer | Technology |
@@ -100,6 +111,15 @@ docker compose up -d homeserver-fe
 - **Port:** `80` (internal, not exposed to host — behind Nginx reverse proxy)
 - **Resource limits:** 64MB RAM, 0.25 CPU
 - **Security:** read-only filesystem, no-new-privileges, tmpfs for Nginx cache/run/tmp
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Status dots stuck red / vitals show `...` | `PUBLIC_API_BASE_URL` unreachable from the browser, or blocked by CORS | Verify `be-homeserver` is healthy and reachable at the configured URL; check the browser console for fetch errors |
+| Stats don't populate for a card | `data-container` / `data-dot-for` value doesn't match a container name | These must match (or be a substring of) the container name reported by `be-homeserver`'s `/docker` endpoint |
+| Env var changes have no effect after redeploy | `BASE_DOMAIN` / `PUBLIC_API_BASE_URL` are baked in at **build time** | Rebuild and push a new image — restarting the running container alone won't pick up new values |
+| Blank page or 404 after deploy | Static build missing, or Nginx serving the wrong directory | Check `docker logs homeserver-fe` and confirm the multi-stage build completed and copied `dist/` into the Nginx image |
 
 ## Project Structure
 
