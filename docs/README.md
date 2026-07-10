@@ -6,6 +6,8 @@
 
 A lightweight Astro static site that serves as the homeserver dashboard. It provides a visual interface for monitoring system vitals (CPU, RAM, disk, temperature) and Docker container statuses by consuming the backend API (`be-homeserver`).
 
+<img display="blocl" margin="auto" width="100%" height="100%" alt="screencapture-dashboard-fahmiefendy-dev-2026-07-10-10_52_50" src="https://github.com/user-attachments/assets/a3db9a7b-9ef3-4137-b6e8-23b9c5179c7a" />
+
 ## Features
 
 - **Public Apps grid** — cards for each publicly deployed app (Homeserver Dashboard, The Wine Corner, Your Places, Kei Japanese Toast, Electricity Tracker) linking to their live URLs, with an online/offline status dot per container (FE/BE where applicable).
