@@ -7,6 +7,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>fahmi homeserver.</title>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<style>
 			:root {
 				--bg-color: #121212;
@@ -14,7 +15,43 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				--text-main: #f0f0f0;
 				--text-muted: #888888;
 				--border-color: #2a2a2a;
+				--border-hover: #555;
+				--select-bg: #222;
+				--dot-offline: #444;
 				--accent-online: #22c55e;
+				--accent-blue: #3b82f6;
+				--accent-purple: #a855f7;
+				--accent-orange: #f97316;
+				--chart-grid: rgba(255, 255, 255, 0.05);
+				--alert-error-bg: rgba(239, 68, 68, 0.1);
+				--alert-error-border: rgba(239, 68, 68, 0.2);
+				--alert-error-text: #fca5a5;
+				--alert-warning-bg: rgba(245, 158, 11, 0.08);
+				--alert-warning-border: rgba(245, 158, 11, 0.15);
+				--alert-warning-text: #fde047;
+				--skeleton-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+				--disk-bg: rgba(255, 255, 255, 0.1);
+				--vital-bg: rgba(255, 255, 255, 0.02);
+			}
+			:root.light-theme {
+				--bg-color: #f4f4f6;
+				--card-bg: #ffffff;
+				--text-main: #1d1d1f;
+				--text-muted: #6e6e73;
+				--border-color: #e5e5ea;
+				--border-hover: #b0b0b5;
+				--select-bg: #ffffff;
+				--dot-offline: #c7c7cc;
+				--chart-grid: rgba(0, 0, 0, 0.05);
+				--alert-error-bg: rgba(239, 68, 68, 0.08);
+				--alert-error-border: rgba(239, 68, 68, 0.25);
+				--alert-error-text: #b91c1c;
+				--alert-warning-bg: rgba(245, 158, 11, 0.06);
+				--alert-warning-border: rgba(245, 158, 11, 0.3);
+				--alert-warning-text: #b45309;
+				--skeleton-bg: linear-gradient(90deg, rgba(0, 0, 0, 0.05) 25%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.05) 75%);
+				--disk-bg: rgba(0, 0, 0, 0.08);
+				--vital-bg: rgba(0, 0, 0, 0.015);
 			}
 			body {
 				background-color: var(--bg-color);
@@ -29,11 +66,16 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				max-width: 800px;
 				width: 100%;
 			}
+			.header-row {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 1rem;
+			}
 			h1 {
 				font-size: 1.5rem;
 				font-weight: 600;
-				margin-top: 0;
-				margin-bottom: 1.5rem;
+				margin: 0;
 				letter-spacing: -0.02em;
 			}
 			.header-controls {
@@ -47,6 +89,11 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				border: 1px solid var(--border-color);
 				padding: 12px 16px;
 				border-radius: 6px;
+			}
+			.toggles-group {
+				display: flex;
+				gap: 24px;
+				align-items: center;
 			}
 			.control-group {
 				display: flex;
@@ -70,7 +117,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				appearance: none;
 				-webkit-appearance: none;
 				-moz-appearance: none;
-				background-color: #222;
+				background-color: var(--select-bg);
 				color: var(--text-main);
 				border: 1px solid var(--border-color);
 				border-radius: 4px;
@@ -85,8 +132,12 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				background-size: 12px;
 				min-width: 105px;
 			}
+			.custom-select option {
+				background-color: var(--card-bg);
+				color: var(--text-main);
+			}
 			.custom-select:hover {
-				border-color: #555;
+				border-color: var(--border-hover);
 			}
 			.icon-button {
 				background: none;
@@ -101,7 +152,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				transition: all 0.2s;
 			}
 			.icon-button:hover {
-				border-color: #555;
+				border-color: var(--border-hover);
 				color: var(--text-main);
 				background-color: rgba(255, 255, 255, 0.05);
 			}
@@ -124,9 +175,9 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				display: flex;
 				align-items: center;
 				gap: 10px;
-				background-color: rgba(239, 68, 68, 0.1);
-				border: 1px solid rgba(239, 68, 68, 0.2);
-				color: #fca5a5;
+				background-color: var(--alert-error-bg);
+				border: 1px solid var(--alert-error-border);
+				color: var(--alert-error-text);
 				border-radius: 6px;
 				padding: 12px 16px;
 				margin-bottom: 1.5rem;
@@ -138,9 +189,9 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				display: flex;
 				align-items: flex-start;
 				gap: 12px;
-				background-color: rgba(245, 158, 11, 0.08);
-				border: 1px solid rgba(245, 158, 11, 0.15);
-				color: #fde047;
+				background-color: var(--alert-warning-bg);
+				border: 1px solid var(--alert-warning-border);
+				color: var(--alert-warning-text);
 				border-radius: 6px;
 				padding: 14px 16px;
 				margin-bottom: 2rem;
@@ -193,7 +244,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				transition: border-color 0.2s ease;
 			}
 			.card:hover {
-				border-color: #555;
+				border-color: var(--border-hover);
 			}
 			.card-header {
 				display: flex;
@@ -223,7 +274,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 			.status-dot {
 				width: 8px;
 				height: 8px;
-				background-color: #444; /* Default offline/unknown gray */
+				background-color: var(--dot-offline); /* Default offline/unknown gray */
 				border-radius: 50%;
 				transition: background-color 0.3s ease;
 			}
@@ -266,7 +317,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				flex-direction: column;
 				align-items: flex-start;
 				gap: 8px;
-				background-color: rgba(255, 255, 255, 0.02);
+				background-color: var(--vital-bg);
 				border: 1px solid var(--border-color);
 				border-radius: 6px;
 				padding: 16px;
@@ -286,7 +337,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				vertical-align: middle;
 			}
 			.sparkline.loading {
-				background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+				background: var(--skeleton-bg);
 				background-size: 200% 100%;
 				animation: shimmer 1.5s infinite linear;
 				border-radius: 4px;
@@ -313,7 +364,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 			.disk-bar-container {
 				width: 100%;
 				height: 6px;
-				background-color: rgba(255, 255, 255, 0.1);
+				background-color: var(--disk-bg);
 				border-radius: 3px;
 				overflow: hidden;
 				display: none;
@@ -332,7 +383,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 			
 			/* Skeletons */
 			.skeleton {
-				background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+				background: var(--skeleton-bg);
 				background-size: 200% 100%;
 				animation: shimmer 1.5s infinite linear;
 				border-radius: 4px;
@@ -469,6 +520,11 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					align-items: stretch;
 					gap: 12px;
 				}
+				.toggles-group {
+					flex-direction: column;
+					align-items: stretch;
+					gap: 12px;
+				}
 				.control-group {
 					justify-content: flex-start;
 				}
@@ -494,6 +550,101 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					margin-top: 2rem;
 				}
 			}
+
+			/* Historical Analytics Section */
+			.history-analytics-card {
+				background-color: var(--card-bg);
+				border: 1px solid var(--border-color);
+				border-radius: 6px;
+				padding: 20px;
+				margin-bottom: 2rem;
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+				animation: fadeIn 0.3s ease;
+			}
+			.analytics-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				border-bottom: 1px solid var(--border-color);
+				padding-bottom: 12px;
+				flex-wrap: wrap;
+				gap: 12px;
+			}
+			.analytics-tabs {
+				display: flex;
+				gap: 8px;
+			}
+			.analytics-tab {
+				background: none;
+				border: 1px solid var(--border-color);
+				color: var(--text-muted);
+				border-radius: 4px;
+				padding: 6px 12px;
+				font-size: 0.8rem;
+				cursor: pointer;
+				transition: all 0.2s;
+			}
+			.analytics-tab:hover {
+				color: var(--text-main);
+				border-color: var(--border-hover);
+			}
+			.analytics-tab.active {
+				color: #fff;
+				background-color: var(--accent-blue);
+				border-color: var(--accent-blue);
+			}
+			.analytics-tab.active[data-tab="cpu"] {
+				background-color: var(--accent-online);
+				border-color: var(--accent-online);
+			}
+			.analytics-tab.active[data-tab="ram"] {
+				background-color: var(--accent-blue);
+				border-color: var(--accent-blue);
+			}
+			.analytics-tab.active[data-tab="temp"] {
+				background-color: var(--accent-orange);
+				border-color: var(--accent-orange);
+			}
+
+			.chart-container {
+				display: flex;
+				gap: 16px;
+				align-items: stretch;
+				padding-top: 10px;
+			}
+			.chart-y-axis {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				font-size: 0.7rem;
+				color: var(--text-muted);
+				font-family: monospace;
+				text-align: right;
+				width: 35px;
+				user-select: none;
+				padding-top: 12px;
+				padding-bottom: 5px;
+				box-sizing: border-box;
+			}
+			.chart-placeholder {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 6px;
+				font-size: 0.85rem;
+				color: var(--text-muted);
+				font-family: monospace;
+				z-index: 5;
+				pointer-events: none;
+				transition: opacity 0.3s ease;
+			}
 			@media (max-width: 480px) {
 				.stats-row {
 					display: grid;
@@ -505,7 +656,27 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 	</head>
 	<body>
 		<div class="container">
-			<h1>fahmi homeserver.</h1>
+			<div class="header-row">
+				<h1>fahmi homeserver.</h1>
+				<button id="theme-toggle-btn" class="icon-button" title="Toggle Theme">
+					<!-- Sun icon (for light mode) -->
+					<svg id="theme-sun-icon" class="theme-icon hidden" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+						<circle cx="12" cy="12" r="5"></circle>
+						<line x1="12" y1="1" x2="12" y2="3"></line>
+						<line x1="12" y1="21" x2="12" y2="23"></line>
+						<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+						<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+						<line x1="1" y1="12" x2="3" y2="12"></line>
+						<line x1="21" y1="12" x2="23" y2="12"></line>
+						<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+						<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+					</svg>
+					<!-- Moon icon (for dark mode) -->
+					<svg id="theme-moon-icon" class="theme-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+					</svg>
+				</button>
+			</div>
 
 			<!-- Error Banner for general API unreachable status -->
 			<div id="error-banner" class="error-banner hidden">
@@ -514,20 +685,22 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 			</div>
 
 			<div class="header-controls">
-				<div class="control-group">
-					<label class="toggle-switch">
-						<input type="checkbox" id="vitals-toggle">
-						<span class="slider"></span>
-					</label>
-					<span>Show Vitals Charts</span>
-				</div>
-				
-				<div class="control-group">
-					<label class="toggle-switch">
-						<input type="checkbox" id="stats-toggle">
-						<span class="slider"></span>
-					</label>
-					<span>Show Container Stats</span>
+				<div class="toggles-group">
+					<div class="control-group">
+						<label class="toggle-switch">
+							<input type="checkbox" id="vitals-toggle">
+							<span class="slider"></span>
+						</label>
+						<span>Show Vitals Charts</span>
+					</div>
+					
+					<div class="control-group">
+						<label class="toggle-switch">
+							<input type="checkbox" id="stats-toggle">
+							<span class="slider"></span>
+						</label>
+						<span>Show Container Stats</span>
+					</div>
 				</div>
 
 				<div class="polling-controls">
@@ -563,6 +736,41 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				<div class="vital">
 					<div>TEMP: <span id="temp" class="skeleton skeleton-text"></span></div>
 					<svg class="sparkline" id="temp-sparkline" viewBox="0 0 100 24" preserveAspectRatio="none"></svg>
+				</div>
+			</div>
+
+			<!-- Historical Analytics Panel -->
+			<div id="history-analytics" class="history-analytics-card hidden">
+				<div class="analytics-header">
+					<div class="analytics-tabs">
+						<button class="analytics-tab active" data-tab="cpu">CPU Load History</button>
+						<button class="analytics-tab" data-tab="ram">RAM Usage History</button>
+						<button class="analytics-tab" data-tab="temp">Temperature History</button>
+					</div>
+				</div>
+				<div class="chart-container">
+					<!-- Y-Axis Scale Legend -->
+					<div class="chart-y-axis">
+						<span id="scale-max">100%</span>
+						<span id="scale-mid">50%</span>
+						<span id="scale-min">0%</span>
+					</div>
+					<!-- Main SVG Area Graph -->
+					<div style="flex: 1; position: relative;">
+						<div id="chart-loading-placeholder" class="chart-placeholder skeleton">
+							<span>Collecting historical data...</span>
+						</div>
+						<svg id="history-chart-svg" viewBox="0 0 500 150" preserveAspectRatio="none" style="width: 100%; height: 150px; overflow: hidden;">
+							<!-- Grid Lines -->
+							<line x1="0" y1="20" x2="500" y2="20" stroke="var(--chart-grid)" stroke-width="1" stroke-dasharray="4 4" />
+							<line x1="0" y1="80" x2="500" y2="80" stroke="var(--chart-grid)" stroke-width="1" stroke-dasharray="4 4" />
+							<line x1="0" y1="140" x2="500" y2="140" stroke="var(--chart-grid)" stroke-width="1" stroke-dasharray="4 4" />
+							
+							<!-- Chart paths populated by script -->
+							<path id="chart-area-path" fill="none" d="" />
+							<path id="chart-line-path" fill="none" stroke="" stroke-width="2" d="" />
+						</svg>
+					</div>
 				</div>
 			</div>
 
@@ -926,6 +1134,39 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				},
 				containers: {} // keyed by lowercase container name, e.g. "fe-homeserver": { cpu: [], mem: [] }
 			};
+			const MAX_HISTORY_POINTS = 30;
+
+			// Theme Switcher Logic
+			const themeToggleBtn = document.getElementById('theme-toggle-btn');
+			const sunIcon = document.getElementById('theme-sun-icon');
+			const moonIcon = document.getElementById('theme-moon-icon');
+
+			function applyTheme(theme) {
+				if (theme === 'light') {
+					document.documentElement.classList.add('light-theme');
+					if (sunIcon) sunIcon.classList.remove('hidden');
+					if (moonIcon) moonIcon.classList.add('hidden');
+				} else {
+					document.documentElement.classList.remove('light-theme');
+					if (sunIcon) sunIcon.classList.add('hidden');
+					if (moonIcon) moonIcon.classList.remove('hidden');
+				}
+				localStorage.setItem('theme', theme);
+			}
+
+			// Detect theme preference
+			const savedTheme = localStorage.getItem('theme');
+			const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+			const initialTheme = savedTheme || (systemPrefersLight ? 'light' : 'dark');
+			applyTheme(initialTheme);
+
+			if (themeToggleBtn) {
+				themeToggleBtn.addEventListener('click', () => {
+					const isLight = document.documentElement.classList.contains('light-theme');
+					applyTheme(isLight ? 'dark' : 'light');
+					drawHistoricalChart();
+				});
+			}
 
 			// Render inline SVG sparkline helper
 			function updateSparkline(svgElement, values, color = '#22c55e') {
@@ -1011,7 +1252,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					const cpuVal = parseFloat(data.cpuLoad);
 					if (!isNaN(cpuVal)) {
 						history.server.cpu.push(cpuVal);
-						if (history.server.cpu.length > 12) history.server.cpu.shift();
+						if (history.server.cpu.length > MAX_HISTORY_POINTS) history.server.cpu.shift();
 						updateSparkline(document.getElementById('cpu-sparkline'), history.server.cpu, '#22c55e');
 					}
 
@@ -1021,7 +1262,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					if (!isNaN(ramUsedVal) && !isNaN(ramTotalVal) && ramTotalVal > 0) {
 						const ramPerc = (ramUsedVal / ramTotalVal) * 100;
 						history.server.ram.push(ramPerc);
-						if (history.server.ram.length > 12) history.server.ram.shift();
+						if (history.server.ram.length > MAX_HISTORY_POINTS) history.server.ram.shift();
 						updateSparkline(document.getElementById('ram-sparkline'), history.server.ram, '#3b82f6');
 					}
 
@@ -1029,7 +1270,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					const tempVal = parseFloat(data.temp);
 					if (!isNaN(tempVal)) {
 						history.server.temp.push(tempVal);
-						if (history.server.temp.length > 12) history.server.temp.shift();
+						if (history.server.temp.length > MAX_HISTORY_POINTS) history.server.temp.shift();
 						updateSparkline(document.getElementById('temp-sparkline'), history.server.temp, '#f97316');
 					}
 
@@ -1158,6 +1399,117 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				}
 			}
 
+			// Historical Analytics Graph Logic
+			let activeTab = 'cpu';
+			const analyticsTabs = document.querySelectorAll('.analytics-tab');
+
+			analyticsTabs.forEach(tab => {
+				tab.addEventListener('click', (e) => {
+					analyticsTabs.forEach(t => t.classList.remove('active'));
+					e.target.classList.add('active');
+					activeTab = e.target.getAttribute('data-tab');
+					drawHistoricalChart();
+				});
+			});
+
+			function drawHistoricalChart() {
+				const svg = document.getElementById('history-chart-svg');
+				const areaPath = document.getElementById('chart-area-path');
+				const linePath = document.getElementById('chart-line-path');
+				const scaleMax = document.getElementById('scale-max');
+				const scaleMid = document.getElementById('scale-mid');
+				const scaleMin = document.getElementById('scale-min');
+
+				if (!svg || !areaPath || !linePath) return;
+
+				const values = history.server[activeTab] || [];
+				const placeholder = document.getElementById('chart-loading-placeholder');
+				if (values.length < 2) {
+					if (placeholder) placeholder.classList.remove('hidden');
+					areaPath.setAttribute('d', '');
+					linePath.setAttribute('d', '');
+					return;
+				} else {
+					if (placeholder) placeholder.classList.add('hidden');
+				}
+
+				// Determine limits based on tab
+				let minVal = 0;
+				let maxVal = 100;
+
+				if (activeTab === 'cpu') {
+					maxVal = 100;
+					scaleMax.textContent = '100%';
+					scaleMid.textContent = '50%';
+					scaleMin.textContent = '0%';
+				} else if (activeTab === 'ram') {
+					maxVal = 100;
+					scaleMax.textContent = '100%';
+					scaleMid.textContent = '50%';
+					scaleMin.textContent = '0%';
+				} else if (activeTab === 'temp') {
+					const maxTemp = Math.max(...values, 80);
+					maxVal = Math.ceil(maxTemp / 10) * 10;
+					scaleMax.textContent = `${maxVal}°C`;
+					scaleMid.textContent = `${(maxVal/2).toFixed(0)}°C`;
+					scaleMin.textContent = '0°C';
+				}
+
+				const range = maxVal - minVal;
+				const width = 500;
+				const height = 150;
+
+				// Generate points mapping (plotted between y = 20 and y = 140 inside 150px viewport height)
+				const points = values.map((val, index) => {
+					const x = (index / (values.length - 1)) * width;
+					const y = height - ((val - minVal) / range) * 120 - 10;
+					return { x, y };
+				});
+
+				// Construct bezier curve path string
+				let linePathStr = '';
+				points.forEach((p, i) => {
+					if (i === 0) {
+						linePathStr = `M ${p.x.toFixed(1)} ${p.y.toFixed(1)}`;
+					} else {
+						const prev = points[i - 1];
+						const cpX1 = prev.x + (p.x - prev.x) / 3;
+						const cpY1 = prev.y;
+						const cpX2 = prev.x + 2 * (p.x - prev.x) / 3;
+						const cpY2 = p.y;
+						linePathStr += ` C ${cpX1.toFixed(1)} ${cpY1.toFixed(1)}, ${cpX2.toFixed(1)} ${cpY2.toFixed(1)}, ${p.x.toFixed(1)} ${p.y.toFixed(1)}`;
+					}
+				});
+
+				const areaPathStr = `${linePathStr} L ${points[points.length - 1].x.toFixed(1)} ${height} L ${points[0].x.toFixed(1)} ${height} Z`;
+
+				// Set paths and colors
+				let color = 'var(--accent-online)'; // CPU
+				if (activeTab === 'ram') color = 'var(--accent-blue)';
+				if (activeTab === 'temp') color = 'var(--accent-orange)';
+
+				// Create gradient background
+				const gradId = `analytics-grad-${activeTab}`;
+				const isLight = document.documentElement.classList.contains('light-theme');
+				const opacityStart = isLight ? '0.12' : '0.2';
+				
+				svg.querySelector('defs')?.remove(); // Clear existing definitions
+				const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+				defs.innerHTML = `
+					<linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
+						<stop offset="0%" stop-color="${color}" stop-opacity="${opacityStart}"/>
+						<stop offset="100%" stop-color="${color}" stop-opacity="0.0"/>
+					</linearGradient>
+				`;
+				svg.insertBefore(defs, svg.firstChild);
+
+				areaPath.setAttribute('d', areaPathStr);
+				areaPath.setAttribute('fill', `url(#${gradId})`);
+				
+				linePath.setAttribute('d', linePathStr);
+				linePath.setAttribute('stroke', color);
+			}
+
 			async function updateData() {
 				const refreshIcon = document.getElementById('refresh-icon');
 				if (refreshIcon) refreshIcon.classList.add('spinning');
@@ -1184,6 +1536,8 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						statusText.style.color = 'var(--text-muted)';
 					}
 				}
+
+				drawHistoricalChart();
 
 				if (isPollingActive) {
 					schedulePoll();
@@ -1221,10 +1575,16 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 			const vitalsToggle = document.getElementById('vitals-toggle');
 			vitalsToggle.addEventListener('change', (e) => {
 				const vitalsBar = document.getElementById('vitals-bar');
+				const historyCard = document.getElementById('history-analytics');
 				if (e.target.checked) {
 					vitalsBar.classList.add('show-charts');
+					if (historyCard) {
+						historyCard.classList.remove('hidden');
+						drawHistoricalChart();
+					}
 				} else {
 					vitalsBar.classList.remove('show-charts');
+					if (historyCard) historyCard.classList.add('hidden');
 				}
 			});
 

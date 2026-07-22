@@ -12,9 +12,6 @@ Planned improvements and future work items.
 - [ ] **Container filtering** — Add filters by type (database, app, infra, monitoring, media)
 - [ ] **Container search** — Search containers by name
 - [ ] **Container sorting** — Sort by name, CPU, memory, status
-- [ ] **Dark/light theme toggle** — Support user preference and system theme
-- [ ] **Favicon** — Replace default Astro favicon with homeserver-branded icon
-- [ ] **Historical charts** — Display vitals history graphs (integrate with Prometheus/Grafana data)
 - [ ] **Notification badges** — Highlight unhealthy or stopped containers with badge counts
 
 ## 🟢 Nice to Have
