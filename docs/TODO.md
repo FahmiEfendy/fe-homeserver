@@ -4,13 +4,10 @@ Planned improvements and future work items.
 
 ---
 
-## High Priority
+## 🔴 Critical
 
-- [ ] **Auto-refresh dashboard** — Implement periodic polling (e.g., every 10s) for vitals and Docker stats
-- [ ] **Error state UI** — Show user-friendly error messages when API is unreachable
-- [ ] **Loading states** — Add skeleton loaders while API data is being fetched
 
-## Medium Priority
+## 🟡 Medium
 
 - [ ] **Container filtering** — Add filters by type (database, app, infra, monitoring, media)
 - [ ] **Container search** — Search containers by name
@@ -20,7 +17,7 @@ Planned improvements and future work items.
 - [ ] **Historical charts** — Display vitals history graphs (integrate with Prometheus/Grafana data)
 - [ ] **Notification badges** — Highlight unhealthy or stopped containers with badge counts
 
-## Low Priority
+## 🟢 Nice to Have
 
 - [ ] **Container detail view** — Click a container to see detailed stats and recent logs
 - [ ] **Quick actions** — Restart/stop containers from the dashboard (requires backend write API)
