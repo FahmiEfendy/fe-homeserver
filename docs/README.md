@@ -13,11 +13,18 @@ A lightweight Astro static site that serves as the homeserver dashboard. It prov
 - **Public Apps grid** — cards for each publicly deployed app (Homeserver Dashboard, The Wine Corner, Your Places, Kei Japanese Toast, Electricity Tracker) linking to their live URLs, with an online/offline status dot per container (FE/BE where applicable).
 - **Internal Tools grid** — quick links to Openinary, Portainer, Grafana, and Prometheus, each with a live status dot.
 - **Infrastructure grid** — status-only cards (no external link) for Nginx, MySQL, MongoDB, PostgreSQL, Watchtower, Loki, Promtail, cAdvisor, and Node Exporter.
-- **Live system vitals bar** — CPU load, RAM used/total, disk usage, and temperature, polled from `be-homeserver` every 5 seconds. A toggle switches between a compact single-line view and an expanded view with sparkline history for CPU, RAM, and temperature.
+- **Live system vitals bar** — CPU load, RAM used/total, disk usage, and temperature, polled from `be-homeserver`. A toggle switches between a compact single-line view and an expanded view with sparkline history for CPU, RAM, and temperature.
+- **Historical analytics charts** — Rolling SVG area charts (last 30 samples) for CPU, RAM, and Temperature with tab switching and a loading skeleton while data accumulates.
+- **Auto-refresh polling** — Configurable interval selector (5s / 10s / 30s / 60s / Paused) with a last-synced timestamp and manual refresh button.
 - **Per-container stats** — a toggle reveals CPU%, memory%, memory usage, and uptime for every container, each with a rolling CPU/memory sparkline (last 12 samples).
 - **Status dots** — any card with a `data-dot-for` attribute turns green when the matching container's Docker status starts with `Up`, red otherwise.
+- **Dark/Light theme toggle** — CSS variable-based theming, persisted in `localStorage`. Theme is applied before first paint to prevent flicker.
+- **Error states** — red banner when the backend API is unreachable; yellow alert when the Docker daemon is inaccessible.
+- **Skeleton loaders** — shimmer placeholders on all vitals and container stat cells while data is loading.
+- **Custom 404 page** — branded error page matching the dashboard theme.
+- **Gzip compression** — Nginx serves assets with gzip for reduced payload size.
 
-All data fetching happens client-side in the browser (see `src/pages/index.astro`) — the page itself is a single static HTML file with no server-side rendering or API routes.
+All data fetching happens client-side in the browser — the page itself is a single static HTML file with no server-side rendering or API routes.
 
 ## Tech Stack
 
@@ -133,12 +140,19 @@ fe-homeserver/
 │       └── deploy.yml  # CI/CD — build & push to GHCR
 ├── .gitignore
 ├── Dockerfile          # Multi-stage: Astro build → Nginx serve
-├── astro.config.mjs    # Astro configuration
+├── nginx.conf          # Custom Nginx config: gzip + custom 404 routing
+├── astro.config.mjs    # Astro configuration (compressHTML: true)
 ├── docs/               # Documentation (this directory)
 ├── package.json
-├── public/             # Static assets (favicon, images)
+├── public/             # Static assets (favicon.svg)
 ├── src/
-│   ├── layouts/        # Page layout templates
-│   └── pages/          # Route pages (file-based routing)
+│   ├── components/     # Reusable Astro components
+│   │   ├── Card.astro          # Container/app card slot (div or <a>)
+│   │   ├── HeaderControls.astro # Toggle + polling controls bar
+│   │   ├── HistoryCharts.astro  # SVG analytics chart panel
+│   │   └── VitalsBar.astro      # Host CPU/RAM/Disk/Temp bar
+│   └── pages/
+│       ├── index.astro  # Main dashboard page
+│       └── 404.astro    # Custom branded error page
 └── tsconfig.json       # TypeScript configuration
 ```

@@ -1,4 +1,9 @@
 ---
+import Card from '../components/Card.astro';
+import VitalsBar from '../components/VitalsBar.astro';
+import HeaderControls from '../components/HeaderControls.astro';
+import HistoryCharts from '../components/HistoryCharts.astro';
+
 const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 ---
 <!doctype html>
@@ -8,7 +13,23 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>fahmi homeserver.</title>
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<style>
+		<script is:inline>
+			(function() {
+				try {
+					const savedTheme = localStorage.getItem('theme');
+					const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+					const theme = savedTheme || (systemPrefersLight ? 'light' : 'dark');
+					if (theme === 'light') {
+						document.documentElement.classList.add('light-theme');
+					} else {
+						document.documentElement.classList.remove('light-theme');
+					}
+				} catch (_) {
+					// localStorage unavailable (e.g. private browsing strict mode) — default to dark
+				}
+			})();
+		</script>
+		<style is:global>
 			:root {
 				--bg-color: #121212;
 				--card-bg: #1a1a1a;
@@ -590,11 +611,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				color: var(--text-main);
 				border-color: var(--border-hover);
 			}
-			.analytics-tab.active {
-				color: #fff;
-				background-color: var(--accent-blue);
-				border-color: var(--accent-blue);
-			}
+			/* .analytics-tab.active base rule removed — each tab has a specific data-tab override below */
 			.analytics-tab.active[data-tab="cpu"] {
 				background-color: var(--accent-online);
 				border-color: var(--accent-online);
@@ -684,95 +701,11 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 				<span id="error-banner-message">Unable to connect to homeserver backend.</span>
 			</div>
 
-			<div class="header-controls">
-				<div class="toggles-group">
-					<div class="control-group">
-						<label class="toggle-switch">
-							<input type="checkbox" id="vitals-toggle">
-							<span class="slider"></span>
-						</label>
-						<span>Show Vitals Charts</span>
-					</div>
-					
-					<div class="control-group">
-						<label class="toggle-switch">
-							<input type="checkbox" id="stats-toggle">
-							<span class="slider"></span>
-						</label>
-						<span>Show Container Stats</span>
-					</div>
-				</div>
+			<HeaderControls />
 
-				<div class="polling-controls">
-					<span id="sync-status" class="sync-status">Initializing...</span>
-					<select id="refresh-interval" class="custom-select">
-						<option value="5000">Every 5s</option>
-						<option value="10000" selected>Every 10s</option>
-						<option value="30000">Every 30s</option>
-						<option value="60000">Every 60s</option>
-						<option value="paused">Paused</option>
-					</select>
-					<button id="refresh-now-btn" class="icon-button" title="Refresh Now">
-						<svg id="refresh-icon" class="refresh-icon" viewBox="0 0 24 24" width="16" height="16">
-							<path d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 8 8h-2a6 6 0 1 1-6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/>
-						</svg>
-					</button>
-				</div>
-			</div>
+			<VitalsBar />
 
-			<div class="vitals-bar" id="vitals-bar">
-				<div class="vital">
-					<div>CPU: <span id="cpu-load" class="skeleton skeleton-text"></span>%</div>
-					<svg class="sparkline" id="cpu-sparkline" viewBox="0 0 100 24" preserveAspectRatio="none"></svg>
-				</div>
-				<div class="vital">
-					<div>RAM <span id="ram-used" class="skeleton skeleton-text"></span> / <span id="ram-total" class="skeleton skeleton-text"></span> GB</div>
-					<svg class="sparkline" id="ram-sparkline" viewBox="0 0 100 24" preserveAspectRatio="none"></svg>
-				</div>
-				<div class="vital">
-					<div>DISK: <span id="disk-usage" class="skeleton skeleton-text"></span></div>
-					<div class="disk-bar-container"><div class="disk-bar-fill" id="disk-bar-fill"></div></div>
-				</div>
-				<div class="vital">
-					<div>TEMP: <span id="temp" class="skeleton skeleton-text"></span></div>
-					<svg class="sparkline" id="temp-sparkline" viewBox="0 0 100 24" preserveAspectRatio="none"></svg>
-				</div>
-			</div>
-
-			<!-- Historical Analytics Panel -->
-			<div id="history-analytics" class="history-analytics-card hidden">
-				<div class="analytics-header">
-					<div class="analytics-tabs">
-						<button class="analytics-tab active" data-tab="cpu">CPU Load History</button>
-						<button class="analytics-tab" data-tab="ram">RAM Usage History</button>
-						<button class="analytics-tab" data-tab="temp">Temperature History</button>
-					</div>
-				</div>
-				<div class="chart-container">
-					<!-- Y-Axis Scale Legend -->
-					<div class="chart-y-axis">
-						<span id="scale-max">100%</span>
-						<span id="scale-mid">50%</span>
-						<span id="scale-min">0%</span>
-					</div>
-					<!-- Main SVG Area Graph -->
-					<div style="flex: 1; position: relative;">
-						<div id="chart-loading-placeholder" class="chart-placeholder skeleton">
-							<span>Collecting historical data...</span>
-						</div>
-						<svg id="history-chart-svg" viewBox="0 0 500 150" preserveAspectRatio="none" style="width: 100%; height: 150px; overflow: hidden;">
-							<!-- Grid Lines -->
-							<line x1="0" y1="20" x2="500" y2="20" stroke="var(--chart-grid)" stroke-width="1" stroke-dasharray="4 4" />
-							<line x1="0" y1="80" x2="500" y2="80" stroke="var(--chart-grid)" stroke-width="1" stroke-dasharray="4 4" />
-							<line x1="0" y1="140" x2="500" y2="140" stroke="var(--chart-grid)" stroke-width="1" stroke-dasharray="4 4" />
-							
-							<!-- Chart paths populated by script -->
-							<path id="chart-area-path" fill="none" d="" />
-							<path id="chart-line-path" fill="none" stroke="" stroke-width="2" d="" />
-						</svg>
-					</div>
-				</div>
-			</div>
+			<HistoryCharts />
 
 			<!-- Docker Socket/Daemon Error Alert -->
 			<div id="docker-error-alert" class="docker-error-alert hidden">
@@ -875,249 +808,29 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						</div>
 					</div>
 				</a>
-				<a href={`https://kei.${baseDomain}`} class="card" target="_blank">
-					<div class="card-header">
-						<h2 class="card-title">Kei Japanese Toast</h2>
-						<div class="status-dots">
-							<div class="dot-wrapper">
-								<span class="dot-label">APP</span>
-								<div class="status-dot" data-dot-for="kei-japanese-app"></div>
-							</div>
-						</div>
-					</div>
-					<p class="card-desc">Premium handcrafted Japanese-style cheese toast</p>
-					<div class="card-stats">
-						<div class="stats-row" data-container="kei-japanese-app">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</a>
-				<a href="https://electricity.fahmiefendy.dev" class="card" target="_blank">
-					<div class="card-header">
-						<h2 class="card-title">Electricity Tracker</h2>
-						<div class="status-dots">
-							<div class="dot-wrapper">
-								<span class="dot-label">APP</span>
-								<div class="status-dot" data-dot-for="electricity-tracker-app"></div>
-							</div>
-						</div>
-					</div>
-					<p class="card-desc">Monitor and track electricity usage</p>
-					<div class="card-stats">
-						<div class="stats-row" data-container="electricity-tracker-app">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</a>
+				<Card href={`https://kei.${baseDomain}`} container="kei-japanese-app" title="Kei Japanese Toast" desc="Premium handcrafted Japanese-style cheese toast" />
+				<Card href="https://electricity.fahmiefendy.dev" container="electricity-tracker-app" title="Electricity Tracker" desc="Monitor and track electricity usage" />
 			</div>
 
 			<div class="section-title">Internal Tools</div>
 			<div class="grid">
-				<a href={`https://openinary.${baseDomain}`} class="card" target="_blank" data-container="media-openinary">
-					<div class="card-header">
-						<h2 class="card-title">Openinary</h2>
-						<div class="status-dot" data-dot-for="media-openinary"></div>
-					</div>
-					<p class="card-desc">Image Manager</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</a>
-				<a href={`https://portainer.${baseDomain}`} class="card" target="_blank" data-container="infra-portainer">
-					<div class="card-header">
-						<h2 class="card-title">Portainer</h2>
-						<div class="status-dot" data-dot-for="infra-portainer"></div>
-					</div>
-					<p class="card-desc">Docker Container Management</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</a>
-				<a href={`https://grafana.${baseDomain}/`} class="card" target="_blank" data-container="monitoring-grafana">
-					<div class="card-header">
-						<h2 class="card-title">Grafana</h2>
-						<div class="status-dot" data-dot-for="monitoring-grafana"></div>
-					</div>
-					<p class="card-desc">Metrics visualization and dashboards</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</a>
-				<a href={`https://prometheus.${baseDomain}`} class="card" target="_blank" data-container="monitoring-prometheus">
-					<div class="card-header">
-						<h2 class="card-title">Prometheus</h2>
-						<div class="status-dot" data-dot-for="monitoring-prometheus"></div>
-					</div>
-					<p class="card-desc">Systems monitoring and alerting toolkit</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</a>
+				<Card href={`https://openinary.${baseDomain}`} container="media-openinary" title="Openinary" desc="Image Manager" />
+				<Card href={`https://portainer.${baseDomain}`} container="infra-portainer" title="Portainer" desc="Docker Container Management" />
+				<Card href={`https://grafana.${baseDomain}/`} container="monitoring-grafana" title="Grafana" desc="Metrics visualization and dashboards" />
+				<Card href={`https://prometheus.${baseDomain}`} container="monitoring-prometheus" title="Prometheus" desc="Systems monitoring and alerting toolkit" />
 			</div>
 
 			<div class="section-title">Infrastructure</div>
 			<div class="grid">
-				<div class="card" data-container="infra-nginx">
-					<div class="card-header">
-						<h2 class="card-title">Nginx Gateway</h2>
-						<div class="status-dot" data-dot-for="infra-nginx"></div>
-					</div>
-					<p class="card-desc">Reverse proxy and gateway router</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</div>
-				<div class="card" data-container="db-mysql">
-					<div class="card-header">
-						<h2 class="card-title">MySQL Database</h2>
-						<div class="status-dot" data-dot-for="db-mysql"></div>
-					</div>
-					<p class="card-desc">Relational database for host apps</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</div>
-				<div class="card" data-container="db-mongo">
-					<div class="card-header">
-						<h2 class="card-title">MongoDB</h2>
-						<div class="status-dot" data-dot-for="db-mongo"></div>
-					</div>
-					<p class="card-desc">Document database for host apps</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</div>
-				<div class="card" data-container="infra-watchtower">
-					<div class="card-header">
-						<h2 class="card-title">Watchtower</h2>
-						<div class="status-dot" data-dot-for="infra-watchtower"></div>
-					</div>
-					<p class="card-desc">Automatic image updater</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</div>
-				<div class="card" data-container="monitoring-loki">
-					<div class="card-header">
-						<h2 class="card-title">Grafana Loki</h2>
-						<div class="status-dot" data-dot-for="monitoring-loki"></div>
-					</div>
-					<p class="card-desc">Horizontally-scalable log aggregation system</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</div>
-				<div class="card" data-container="monitoring-promtail">
-					<div class="card-header">
-						<h2 class="card-title">Grafana Promtail</h2>
-						<div class="status-dot" data-dot-for="monitoring-promtail"></div>
-					</div>
-					<p class="card-desc">Log shipping agent for Loki</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</div>
-				<div class="card" data-container="db-postgres">
-					<div class="card-header">
-						<h2 class="card-title">PostgreSQL Database</h2>
-						<div class="status-dot" data-dot-for="db-postgres"></div>
-					</div>
-					<p class="card-desc">Object-relational database system</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</div>
-				<div class="card" data-container="monitoring-cadvisor">
-					<div class="card-header">
-						<h2 class="card-title">cAdvisor</h2>
-						<div class="status-dot" data-dot-for="monitoring-cadvisor"></div>
-					</div>
-					<p class="card-desc">Container resource usage exporter</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</div>
-				<div class="card" data-container="monitoring-node-exporter">
-					<div class="card-header">
-						<h2 class="card-title">Node Exporter</h2>
-						<div class="status-dot" data-dot-for="monitoring-node-exporter"></div>
-					</div>
-					<p class="card-desc">Host system metrics exporter</p>
-					<div class="card-stats">
-						<div class="stats-row">
-							<div class="card-stats-col"><span class="card-stats-label">CPU%</span><span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM%</span><span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span><svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg></div>
-							<div class="card-stats-col"><span class="card-stats-label">MEM</span><span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span></div>
-							<div class="card-stats-col"><span class="card-stats-label">UPTIME</span><span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span></div>
-						</div>
-					</div>
-				</div>
+				<Card container="infra-nginx" title="Nginx Gateway" desc="Reverse proxy and gateway router" />
+				<Card container="db-mysql" title="MySQL Database" desc="Relational database for host apps" />
+				<Card container="db-mongo" title="MongoDB" desc="Document database for host apps" />
+				<Card container="infra-watchtower" title="Watchtower" desc="Automatic image updater" />
+				<Card container="monitoring-loki" title="Grafana Loki" desc="Horizontally-scalable log aggregation system" />
+				<Card container="monitoring-promtail" title="Grafana Promtail" desc="Log shipping agent for Loki" />
+				<Card container="db-postgres" title="PostgreSQL Database" desc="Object-relational database system" />
+				<Card container="monitoring-cadvisor" title="cAdvisor" desc="Container resource usage exporter" />
+				<Card container="monitoring-node-exporter" title="Node Exporter" desc="Host system metrics exporter" />
 			</div>
 		</div>
 
@@ -1151,14 +864,18 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					if (sunIcon) sunIcon.classList.add('hidden');
 					if (moonIcon) moonIcon.classList.remove('hidden');
 				}
-				localStorage.setItem('theme', theme);
+				try { localStorage.setItem('theme', theme); } catch (_) {}
 			}
 
-			// Detect theme preference
-			const savedTheme = localStorage.getItem('theme');
-			const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-			const initialTheme = savedTheme || (systemPrefersLight ? 'light' : 'dark');
-			applyTheme(initialTheme);
+			// Sync icon state with current theme (class already applied by head script)
+			const isCurrentlyLight = document.documentElement.classList.contains('light-theme');
+			if (isCurrentlyLight) {
+				if (sunIcon) sunIcon.classList.remove('hidden');
+				if (moonIcon) moonIcon.classList.add('hidden');
+			} else {
+				if (sunIcon) sunIcon.classList.add('hidden');
+				if (moonIcon) moonIcon.classList.remove('hidden');
+			}
 
 			if (themeToggleBtn) {
 				themeToggleBtn.addEventListener('click', () => {
@@ -1230,11 +947,11 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 						throw new Error(data.error);
 					}
 
-					cpuLoadEl.textContent = data.cpuLoad;
-					ramUsedEl.textContent = data.ramUsed;
-					ramTotalEl.textContent = data.ramTotal;
-					diskUsageEl.textContent = data.disk;
-					tempEl.textContent = data.temp;
+					if (cpuLoadEl) cpuLoadEl.textContent = data.cpuLoad ?? '--';
+					if (ramUsedEl) ramUsedEl.textContent = data.ramUsed ?? '--';
+					if (ramTotalEl) ramTotalEl.textContent = data.ramTotal ?? '--';
+					if (diskUsageEl) diskUsageEl.textContent = data.disk ?? '--';
+					if (tempEl) tempEl.textContent = data.temp ?? '--';
 
 					// Remove skeleton classes on success
 					[cpuLoadEl, ramUsedEl, ramTotalEl, diskUsageEl, tempEl].forEach(el => {
@@ -1301,10 +1018,14 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 					if (!res.ok) {
 						throw new Error(`HTTP error ${res.status}`);
 					}
-					const data = await res.json();
-					
-					if (data.error) {
-						throw new Error(data.error);
+					let data;
+					try {
+						data = await res.json();
+					} catch {
+						throw new Error('Invalid JSON from /docker endpoint');
+					}
+					if (!Array.isArray(data)) {
+						throw new Error(data?.error ?? 'Unexpected response from /docker endpoint');
 					}
 					
 					// Map stats to corresponding nodes
@@ -1561,7 +1282,7 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 			
 			// Handle Toggles
 			const toggle = document.getElementById('stats-toggle');
-			toggle.addEventListener('change', (e) => {
+			toggle?.addEventListener('change', (e) => {
 				const statsBlocks = document.querySelectorAll('.card-stats');
 				statsBlocks.forEach(block => {
 					if (e.target.checked) {
@@ -1573,17 +1294,17 @@ const baseDomain = import.meta.env.BASE_DOMAIN || 'fahmiefendy.dev';
 			});
 
 			const vitalsToggle = document.getElementById('vitals-toggle');
-			vitalsToggle.addEventListener('change', (e) => {
+			vitalsToggle?.addEventListener('change', (e) => {
 				const vitalsBar = document.getElementById('vitals-bar');
 				const historyCard = document.getElementById('history-analytics');
 				if (e.target.checked) {
-					vitalsBar.classList.add('show-charts');
+					vitalsBar?.classList.add('show-charts');
 					if (historyCard) {
 						historyCard.classList.remove('hidden');
 						drawHistoricalChart();
 					}
 				} else {
-					vitalsBar.classList.remove('show-charts');
+					vitalsBar?.classList.remove('show-charts');
 					if (historyCard) historyCard.classList.add('hidden');
 				}
 			});

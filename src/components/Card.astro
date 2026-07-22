@@ -1,0 +1,34 @@
+---
+const { container, title, desc, href } = Astro.props;
+const Element = href ? 'a' : 'div';
+const extraAttrs = href ? { href, target: '_blank' } : {};
+---
+<Element class="card" data-container={container} {...extraAttrs}>
+	<div class="card-header">
+		<h2 class="card-title">{title}</h2>
+		<div class="status-dot" data-dot-for={container}></div>
+	</div>
+	<p class="card-desc">{desc}</p>
+	<div class="card-stats">
+		<div class="stats-row">
+			<div class="card-stats-col">
+				<span class="card-stats-label">CPU%</span>
+				<span class="stat-cpu card-stats-val"><span class="skeleton skeleton-val"></span></span>
+				<svg class="sparkline container-sparkline-cpu" viewBox="0 0 100 24" preserveAspectRatio="none"></svg>
+			</div>
+			<div class="card-stats-col">
+				<span class="card-stats-label">MEM%</span>
+				<span class="stat-mem-perc card-stats-val"><span class="skeleton skeleton-val"></span></span>
+				<svg class="sparkline container-sparkline-mem" viewBox="0 0 100 24" preserveAspectRatio="none"></svg>
+			</div>
+			<div class="card-stats-col">
+				<span class="card-stats-label">MEM</span>
+				<span class="stat-mem card-stats-val"><span class="skeleton skeleton-val"></span></span>
+			</div>
+			<div class="card-stats-col">
+				<span class="card-stats-label">UPTIME</span>
+				<span class="stat-uptime card-stats-val"><span class="skeleton skeleton-uptime"></span></span>
+			</div>
+		</div>
+	</div>
+</Element>

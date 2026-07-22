@@ -15,6 +15,8 @@ COPY . .
 RUN npm run build
 
 FROM nginx:alpine
+# Copy custom Nginx configuration with gzip and custom 404
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copy the static built files from Astro to NGINX html folder
 COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 80

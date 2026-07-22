@@ -1,0 +1,36 @@
+---
+// HistoryCharts Component
+---
+<div id="history-analytics" class="history-analytics-card hidden">
+	<div class="analytics-header">
+		<div class="analytics-tabs">
+			<button class="analytics-tab active" data-tab="cpu">CPU Load History</button>
+			<button class="analytics-tab" data-tab="ram">RAM Usage History</button>
+			<button class="analytics-tab" data-tab="temp">Temperature History</button>
+		</div>
+	</div>
+	<div class="chart-container">
+		<!-- Y-Axis Scale Legend -->
+		<div class="chart-y-axis">
+			<span id="scale-max">100%</span>
+			<span id="scale-mid">50%</span>
+			<span id="scale-min">0%</span>
+		</div>
+		<!-- Main SVG Area Graph -->
+		<div style="flex: 1; position: relative;">
+			<div id="chart-loading-placeholder" class="chart-placeholder skeleton">
+				<span>Collecting historical data...</span>
+			</div>
+			<svg id="history-chart-svg" viewBox="0 0 500 150" preserveAspectRatio="none" style="width: 100%; height: 150px; overflow: hidden;">
+				<!-- Grid Lines -->
+				<line x1="0" y1="20" x2="500" y2="20" stroke="var(--chart-grid)" stroke-width="1" stroke-dasharray="4 4" />
+				<line x1="0" y1="80" x2="500" y2="80" stroke="var(--chart-grid)" stroke-width="1" stroke-dasharray="4 4" />
+				<line x1="0" y1="140" x2="500" y2="140" stroke="var(--chart-grid)" stroke-width="1" stroke-dasharray="4 4" />
+				
+				<!-- Chart paths populated by script -->
+				<path id="chart-area-path" fill="none" d="" />
+				<path id="chart-line-path" fill="none" stroke="" stroke-width="2" d="" />
+			</svg>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,21 @@
+---
+// VitalsBar Component
+---
+<div class="vitals-bar" id="vitals-bar">
+	<div class="vital">
+		<div>CPU: <span id="cpu-load" class="skeleton skeleton-text"></span>%</div>
+		<svg class="sparkline" id="cpu-sparkline" viewBox="0 0 100 24" preserveAspectRatio="none"></svg>
+	</div>
+	<div class="vital">
+		<div>RAM <span id="ram-used" class="skeleton skeleton-text"></span> / <span id="ram-total" class="skeleton skeleton-text"></span> GB</div>
+		<svg class="sparkline" id="ram-sparkline" viewBox="0 0 100 24" preserveAspectRatio="none"></svg>
+	</div>
+	<div class="vital">
+		<div>DISK: <span id="disk-usage" class="skeleton skeleton-text"></span></div>
+		<div class="disk-bar-container"><div class="disk-bar-fill" id="disk-bar-fill"></div></div>
+	</div>
+	<div class="vital">
+		<div>TEMP: <span id="temp" class="skeleton skeleton-text"></span></div>
+		<svg class="sparkline" id="temp-sparkline" viewBox="0 0 100 24" preserveAspectRatio="none"></svg>
+	</div>
+</div>
